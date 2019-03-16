@@ -1,0 +1,44 @@
+--- spatialaudio-0.3.0/cmake/spatialaudio.pc.cmake.orig	2017-07-20 15:04:58.000000000 +0200
++++ spatialaudio-0.3.0/cmake/spatialaudio.pc.cmake	2019-03-16 19:04:17.519588557 +0100
+@@ -1,5 +1,5 @@
+ prefix=@CMAKE_INSTALL_PREFIX@
+-libdir=${prefix}/lib
++libdir=${prefix}/lib@LIB_SUFFIX@
+ includedir=${prefix}/include
+ 
+ Name: libspatialaudio
+--- spatialaudio-0.3.0/cmake/Modules/FindMySofa.cmake.orig	2017-07-19 16:26:19.000000000 +0200
++++ spatialaudio-0.3.0/cmake/Modules/FindMySofa.cmake	2019-03-16 19:04:50.299410973 +0100
+@@ -23,7 +23,7 @@
+ 
+ find_library(MYSOFA_LIBRARIES
+     NAMES libmysofa.a mysofa
+-    HINTS ${MYSOFA_ROOT_DIR}/lib
++    HINTS ${MYSOFA_ROOT_DIR}/lib${LIB_SUFFIX}
+ )
+ 
+ find_path(MYSOFA_INCLUDE_DIRS
+--- spatialaudio-0.3.0/CMakeLists.txt.orig	2017-07-20 22:08:19.000000000 +0200
++++ spatialaudio-0.3.0/CMakeLists.txt	2019-03-16 19:07:51.928427005 +0100
+@@ -67,7 +67,8 @@
+     include_directories(${MYSOFA_INCLUDE_DIRS})
+ endif(${MYSOFA_FOUND})
+ 
+-add_library(spatialaudio STATIC ${sources})
++add_library(spatialaudio ${sources})
++set_target_properties(spatialaudio PROPERTIES SOVERSION 0)
+ 
+ if(${MYSOFA_FOUND})
+     target_link_libraries(spatialaudio ${MYSOFA_LIBRARIES})
+@@ -93,9 +93,9 @@
+   @ONLY
+ )
+ 
+-install(TARGETS ${PROJECT_NAME} ARCHIVE DESTINATION lib)
++install(TARGETS ${PROJECT_NAME} ARCHIVE DESTINATION lib${LIB_SUFFIX} LIBRARY DESTINATION lib${LIB_SUFFIX})
+ install(FILES ${headers} DESTINATION include/spatialaudio)
+-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc" DESTINATION lib/pkgconfig)
++install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc" DESTINATION lib${LIB_SUFFIX}/pkgconfig)
+ install(FILES ${PROJECT_BINARY_DIR}/config.h DESTINATION include/spatialaudio)
+ 
+ #Tarballs generation
