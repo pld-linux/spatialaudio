@@ -2,7 +2,7 @@ Summary:	Ambisonic encoding / decoding and binauralization library
 Summary(pl.UTF-8):	Biblioteka kodowania/dekodowania dźwięku sferycznego Ambisonic i binauralnego
 Name:		spatialaudio
 Version:	0.3.0
-Release:	1
+Release:	2
 License:	LGPL v2.1+ or commercial
 Group:		Libraries
 #Source0Download: https://github.com/videolabs/libspatialaudio/releases
