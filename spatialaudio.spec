@@ -61,7 +61,7 @@ Statyczna biblioteka spatialaudio.
 
 %prep
 %setup -q
-%patch0 -p1
+%patch -P0 -p1
 
 %{__sed} -ne '1,/^===/ p' LICENSE > COPYING
 
