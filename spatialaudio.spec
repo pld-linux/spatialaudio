@@ -1,18 +1,18 @@
 Summary:	Ambisonic encoding / decoding and binauralization library
 Summary(pl.UTF-8):	Biblioteka kodowania/dekodowania dźwięku sferycznego Ambisonic i binauralnego
 Name:		spatialaudio
-Version:	0.3.0
-Release:	2
+Version:	0.4.0
+Release:	1
 License:	LGPL v2.1+ or commercial
 Group:		Libraries
-#Source0Download: https://github.com/videolabs/libspatialaudio/releases
-Source0:	https://github.com/videolabs/libspatialaudio/releases/download/%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	be4db966f6ce6dfeea1788025a7e0a2d
-Patch0:		%{name}-cmake.patch
-URL:		https://github.com/videolabs/libspatialaudio
-BuildRequires:	cmake >= 3.1
+#Source0Download: https://github.com/videolan/libspatialaudio/releases
+Source0:	https://github.com/videolan/libspatialaudio/archive/refs/tags/%{version}.tar.gz?/%{name}-%{version}.tar.gz
+# Source0-md5:	d8ff822b4af87cb3c57d5d677331bdd3
+Patch0:		%{name}-install.patch
+URL:		https://github.com/videolan/libspatialaudio
+BuildRequires:	cmake >= 3.23
 BuildRequires:	libmysofa-devel
-BuildRequires:	libstdc++-devel >= 6:4.7
+BuildRequires:	libstdc++-devel >= 6:5
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -38,7 +38,7 @@ Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki spatialaudio
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	libmysofa-devel
-Requires:	libstdc++-devel >= 6:4.7
+Requires:	libstdc++-devel >= 6:5
 Requires:	zlib-devel
 
 %description devel
@@ -47,20 +47,8 @@ Header files for spatialaudio library.
 %description devel -l pl.UTF-8
 Pliki nagłówkowe biblioteki spatialaudio.
 
-%package static
-Summary:	Static spatialaudio library
-Summary(pl.UTF-8):	Statyczna biblioteka spatialaudio
-Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
-
-%description static
-Static spatialaudio library.
-
-%description static -l pl.UTF-8
-Statyczna biblioteka spatialaudio.
-
 %prep
-%setup -q
+%setup -q -n libspatialaudio-%{version}
 %patch -P0 -p1
 
 %{__sed} -ne '1,/^===/ p' LICENSE > COPYING
@@ -87,7 +75,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc COPYING README.md
-%attr(755,root,root) %{_libdir}/libspatialaudio.so.0
+%attr(755,root,root) %{_libdir}/libspatialaudio.so.*.*.*
+%ghost %attr(755,root,root) %{_libdir}/libspatialaudio.so.2
 
 %files devel
 %defattr(644,root,root,755)
