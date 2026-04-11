@@ -6,13 +6,14 @@ Release:	1
 License:	LGPL v2.1+ or commercial
 Group:		Libraries
 #Source0Download: https://github.com/videolan/libspatialaudio/releases
-Source0:	https://github.com/videolan/libspatialaudio/archive/refs/tags/%{version}.tar.gz?/%{name}-%{version}.tar.gz
+Source0:	https://github.com/videolan/libspatialaudio/archive/%{version}/%{name}-%{version}.tar.gz
 # Source0-md5:	d8ff822b4af87cb3c57d5d677331bdd3
 Patch0:		%{name}-install.patch
 URL:		https://github.com/videolan/libspatialaudio
 BuildRequires:	cmake >= 3.23
 BuildRequires:	libmysofa-devel
 BuildRequires:	libstdc++-devel >= 6:5
+BuildRequires:	rpmbuild(macros) >= 1.605
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -54,11 +55,9 @@ Pliki nagłówkowe biblioteki spatialaudio.
 %{__sed} -ne '1,/^===/ p' LICENSE > COPYING
 
 %build
-install -d build
-cd build
-%cmake ..
+%cmake -B build
 
-%{__make}
+%{__make} -C build
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -74,12 +73,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc COPYING README.md
-%attr(755,root,root) %{_libdir}/libspatialaudio.so.*.*.*
-%ghost %attr(755,root,root) %{_libdir}/libspatialaudio.so.2
+%doc COPYING Changelog.md README.md
+%{_libdir}/libspatialaudio.so.*.*.*
+%ghost %{_libdir}/libspatialaudio.so.2
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libspatialaudio.so
+%{_libdir}/libspatialaudio.so
 %{_includedir}/spatialaudio
 %{_pkgconfigdir}/spatialaudio.pc
