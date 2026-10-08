@@ -1,14 +1,13 @@
 Summary:	Ambisonic encoding / decoding and binauralization library
 Summary(pl.UTF-8):	Biblioteka kodowania/dekodowania dźwięku sferycznego Ambisonic i binauralnego
 Name:		spatialaudio
-Version:	0.4.0
+Version:	0.4.1
 Release:	1
 License:	LGPL v2.1+ or commercial
 Group:		Libraries
 #Source0Download: https://github.com/videolan/libspatialaudio/releases
 Source0:	https://github.com/videolan/libspatialaudio/archive/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	d8ff822b4af87cb3c57d5d677331bdd3
-Patch0:		%{name}-install.patch
+# Source0-md5:	726eaea2264ff392698ac88fc3b13edc
 URL:		https://github.com/videolan/libspatialaudio
 BuildRequires:	cmake >= 3.23
 BuildRequires:	libmysofa-devel
@@ -50,12 +49,13 @@ Pliki nagłówkowe biblioteki spatialaudio.
 
 %prep
 %setup -q -n libspatialaudio-%{version}
-%patch -P0 -p1
 
 %{__sed} -ne '1,/^===/ p' LICENSE > COPYING
 
 %build
-%cmake -B build
+# .pc file generation expects relative CMAKE_INSTALL_LIBDIR
+%cmake -B build \
+	-DCMAKE_INSTALL_LIBDIR=%{_lib}
 
 %{__make} -C build
 
